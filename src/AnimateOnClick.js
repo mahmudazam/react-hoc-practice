@@ -2,15 +2,15 @@
 import React, { Component } from 'react';
 import { chainTransform } from './ChainTransform';
 
-const animateLoad = (Child, before, after) => {
+const animateOnClick = (Child, before, after) =>  {
   let result = class extends Component {
     state = { show: false };
 
-    componentDidMount() {
+    onClick() {
       setTimeout(() => {
         this.setState({
           ...this.state,
-          show: true
+          show: !this.state.show
         });
       }, 0);
     }
@@ -18,7 +18,8 @@ const animateLoad = (Child, before, after) => {
     render() {
       let props = this.props;
       return (
-        <div style={this.state.show ? after : before}>
+        <div onClick={this.onClick.bind(this)}
+             style={this.state.show ? after : before}>
           <Child {...props}/>
         </div>
       );
@@ -28,4 +29,4 @@ const animateLoad = (Child, before, after) => {
   return chainTransform(result);
 }
 
-export { animateLoad };
+export { animateOnClick };

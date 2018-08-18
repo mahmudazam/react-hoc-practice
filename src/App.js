@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Panel from './Panel';
 import { animateLoad } from './AnimateLoad.js';
+import { animateOnClick } from './AnimateOnClick.js'
 
 import logo from './logo.svg';
 import './App.css';
@@ -9,7 +10,14 @@ class App extends Component {
   render() {
     let FadeInPanel = animateLoad(Panel,
         { opacity: '0' },
-        { opacity: '1', transition: '0.5s' });
+        { background: 'green', opacity: '1', transition: '0.5s' });
+
+    let ChainedAnimationPanel = animateOnClick(Panel,
+        { opacity: '0', background: 'yellow' },
+        { opacity: '1', background: 'green', transition: '1s' })
+      .then(animateLoad,
+        { transition: '0.5s' },
+        { background: 'yellow', transition: '0.5s' });
 
     return (
       <div className="App">
@@ -17,9 +25,12 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <FadeInPanel style={{ border: 'black 5px' }}>
+        <FadeInPanel className="first-panel">
           This fades in on page load. Refresh to try...
         </FadeInPanel>
+        <ChainedAnimationPanel>
+          Click to change background...
+        </ChainedAnimationPanel>
       </div>
     );
   }
